@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checklist do Jogo de Tabuleiro - WIT</title>
+<style>
+:root{
+--roxo:#2d1167;--roxo2:#16052f;--verde:#8bd600;--azul:#00a7ff;--amarelo:#ffd43b;--rosa:#ff4fb8;--laranja:#ff922b;--branco:#fff;--claro:#f7f4ff;
+}
+*{box-sizing:border-box}
+body{
+margin:0;min-height:100vh;font-family:"Trebuchet MS",Arial,sans-serif;
+background:radial-gradient(circle at 10% 10%,rgba(0,167,255,.35),transparent 28%),radial-gradient(circle at 90% 85%,rgba(139,214,0,.30),transparent 26%),linear-gradient(135deg,var(--roxo2),var(--roxo));
+padding:24px;color:var(--roxo2);display:flex;align-items:center;justify-content:center;
+}
+.page{
+width:min(980px,100%);background:rgba(255,255,255,.96);border:4px solid var(--verde);border-radius:32px;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.35);position:relative;overflow:hidden;
+}
+.page:before,.page:after{
+content:"";position:absolute;width:160px;height:160px;border-radius:50%;background-image:radial-gradient(rgba(45,17,103,.18) 2px,transparent 2px);background-size:18px 18px;opacity:.45;
+}
+.page:before{top:18px;left:18px}.page:after{right:18px;bottom:18px}
+header,.content,.actions,.footer{position:relative;z-index:2}
+header{text-align:center;margin-bottom:22px}
+.tag{display:inline-block;background:var(--roxo2);color:white;border:4px solid var(--verde);border-radius:999px;padding:12px 22px;font-weight:900;letter-spacing:1px;box-shadow:0 8px 0 rgba(0,0,0,.22);font-size:clamp(1rem,2.2vw,1.4rem)}
+h1{margin:18px 0 8px;color:var(--roxo);font-size:clamp(2rem,5vw,4rem);line-height:1;text-transform:uppercase}
+.subtitle{margin:0 auto;max-width:780px;color:#4b327b;font-weight:800;font-size:clamp(1rem,2vw,1.25rem)}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0}
+.inputbox{display:flex;flex-direction:column;gap:6px;font-weight:900;color:var(--roxo)}
+input[type=text]{border:3px solid rgba(45,17,103,.25);border-radius:16px;padding:14px 16px;font-size:1rem;font-family:inherit;outline:none}
+input[type=text]:focus{border-color:var(--verde);box-shadow:0 0 0 4px rgba(139,214,0,.18)}
+.checklist{display:grid;gap:14px}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;padding:16px;background:var(--claro);border:3px solid rgba(45,17,103,.14);border-radius:20px;box-shadow:0 5px 0 rgba(45,17,103,.08);transition:.2s}
+.item:hover{transform:translateY(-2px);border-color:var(--verde)}
+.icon{width:48px;height:48px;display:grid;place-items:center;border-radius:16px;font-size:1.7rem;background:white;border:3px solid rgba(45,17,103,.15)}
+.question{font-size:clamp(1rem,2vw,1.22rem);font-weight:900}
+.item input{appearance:none;width:38px;height:38px;border-radius:12px;border:4px solid var(--roxo);background:white;cursor:pointer;position:relative}
+.item input:checked{background:var(--verde);border-color:#5da900}
+.item input:checked:after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;font-size:1.7rem;font-weight:900;color:var(--roxo2)}
+.progress{margin:24px 0 0;background:linear-gradient(135deg,var(--roxo),var(--roxo2));color:white;border-radius:24px;padding:20px;border:4px solid var(--verde)}
+.progresstitle{font-weight:900;font-size:1.25rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.bar{height:22px;background:rgba(255,255,255,.18);border-radius:999px;overflow:hidden;border:2px solid rgba(255,255,255,.22);margin-top:12px}
+.fill{height:100%;width:0%;background:linear-gradient(90deg,var(--verde),var(--amarelo));border-radius:999px;transition:.25s}
+.actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:24px}
+button{border:none;cursor:pointer;font-family:inherit;font-weight:900;text-transform:uppercase;border-radius:18px;padding:16px 24px;font-size:1rem;transition:.15s}
+.primary{background:linear-gradient(180deg,var(--verde),#5da900);color:var(--roxo2);box-shadow:0 7px 0 #315f00}
+.secondary{background:white;color:var(--roxo);border:3px solid var(--roxo);box-shadow:0 7px 0 rgba(45,17,103,.24)}
+button:hover{transform:translateY(-2px)}button:active{transform:translateY(4px);box-shadow:none}
+.footer{text-align:center;margin-top:18px;font-weight:900;color:#4b327b}
+@media(max-width:720px){body{padding:12px}.page{padding:18px;border-radius:24px}.info{grid-template-columns:1fr}.item{padding:14px}.icon{width:42px;height:42px;font-size:1.45rem}}
+@media print{body{background:white;padding:0}.page{box-shadow:none;border:2px solid #ddd;border-radius:0;width:100%}.actions{display:none}}
+</style>
+</head>
+<body>
+<section class="page" id="checklistArea">
+<header>
+<div class="tag">👾 WIT - Oficina de Games - Trainee</div>
+<h1>Checklist do Jogo</h1>
+<p class="subtitle">Use este checklist para verificar se o jogo de tabuleiro está completo antes do teste com outro time.</p>
+</header>
+
+<div class="content">
+<section class="info">
+<label class="inputbox">Nome do jogo<input id="nomeJogo" type="text" placeholder="Digite o nome do jogo"></label>
+<label class="inputbox">Nome do time<input id="nomeTime" type="text" placeholder="Digite o nome do time"></label>
+</section>
+
+<section class="checklist">
+<label class="item"><span class="icon">🎲</span><span class="question">É um jogo de tabuleiro?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">🔢</span><span class="question">Tem no mínimo 24 casas para movimento?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">🚩</span><span class="question">Tem local de início demarcado?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">🏆</span><span class="question">Existe uma condição de vitória?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">👥</span><span class="question">Pode ter entre 2 e 6 jogadores?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">🃏</span><span class="question">Há cards no jogo?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">⭐</span><span class="question">Há cards que estão atrelados a casas especiais?</span><input type="checkbox" class="check"></label>
+<label class="item"><span class="icon">🎯</span><span class="question">Há o uso do spinner?</span><input type="checkbox" class="check"></label>
+</section>
+
+<section class="progress">
+<div class="progresstitle"><span>Progresso do checklist</span><span id="score">0 de 8 itens concluídos</span></div>
+<div class="bar"><div class="fill" id="fill"></div></div>
+</section>
+</div>
+
+<section class="actions">
+<button class="primary" onclick="gerarPDF()">Baixar PDF</button>
+<button class="secondary" onclick="limparChecklist()">Limpar checklist</button>
+</section>
+
+<p class="footer">Pense • Planeje • Crie • Teste • Aprimore</p>
+</section>
+
+<script>
+const checks=document.querySelectorAll(".check");
+const score=document.getElementById("score");
+const fill=document.getElementById("fill");
+
+function atualizarProgresso(){
+const total=checks.length;
+const marcados=[...checks].filter(c=>c.checked).length;
+const porcentagem=Math.round((marcados/total)*100);
+score.textContent=`${marcados} de ${total} itens concluídos`;
+fill.style.width=`${porcentagem}%`;
+}
+
+checks.forEach(c=>c.addEventListener("change",atualizarProgresso));
+
+function limparChecklist(){
+document.getElementById("nomeJogo").value="";
+document.getElementById("nomeTime").value="";
+checks.forEach(c=>c.checked=false);
+atualizarProgresso();
+}
+
+function gerarPDF(){
+const nomeJogo=document.getElementById("nomeJogo").value.trim();
+document.title=nomeJogo?`Checklist WIT - ${nomeJogo}`:"Checklist WIT";
+window.print();
+}
+
+atualizarProgresso();
+</script>
+</body>
+</html>
